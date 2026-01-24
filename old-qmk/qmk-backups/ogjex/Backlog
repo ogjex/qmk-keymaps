@@ -1,0 +1,84 @@
+2024 update:
+keyboard is now refactored and in master status
+
+______________________________________________________________________________
+Reading guide:
+
+Keyboard is designated as two Halves: A and B.
+Layers are numbered 0-4.
+Rows are numbers 1-4.
+Keys are numbered 1-5.
+[HLRK]
+
+So the A key would be A121, the Enter key would be B425.
+
+
+_______________________________________________________________________________
+
+Backlog catalog:
+
+- find out how other keyboards can reuse code
+
+*D fix Danish special chars for keyboard
+
+*D fix left and right skip arrow keys
+
+*D add modtap for space ands shift
+
+*D kc_no currently sends m_ques macro
+
+- create DK custom key codes for stronger readability of layout _SYMB
+
+D* remove double hold gui from B142
+    - Done
+
+D* add gui key unregister somewhere, maybe W?
+    - already implemented as A141 when Held and released
+
+* add repeat key while held for left and right skip hold
+    - code is not pretty, needs refactor due to code duplication
+    - needs to have separate static variables for all functions to properly call cur_dance in reset function (?)
+    *- added double hold skip to work with Excel (which skips pages when arrow and ctrl is held)
+
+- add combo keys:
+    - add combo_keys definition in rules.mk
+    - combo key for enter in _qwerty layer
+    - combo key for backspace _qwerty layer
+
+D* add hold for  for B142 ctrl+shift and double hold alt+shift and triple hold for ctrl+shift+alt
+    * - changed double hold to win + shift
+
+D* add plus for hold tap dances in _SYMB
+
+D* add new layer with F keys
+
+D* remove shift from A141 and replace with Windows key
+
+D* make a mod tap for A141 layers 1+
+    * set tapping term to very little
+    * make sure that the key is actually held on layers 1-4
+    * [bug] does not distinguish between tap and hold (hold is called even though it is a tap)
+    * layer on is not called correctly (but worked 3 days ago)
+
+- add close window for symbol layer double hold w
+
+- add close app for symbol layer double hold q
+
+- add rename symbol layer double hold r
+
+- add double_single_tap for o
+
+- fix local switch ctrl+tab in VS Code
+
+- add macro for capital letter after .
+
+- find out how to do a tapdance in oneshot layer
+    - test using held oneshot modifier = not working
+
+- add macro for (), [], {} when double tapped
+
+- add macro for `, `` and ```, ", ' when double and/or triple tapped
+
+- add macro functions that are called instead of embedding them in tapdance.c
+
+D*- refactor code into low coupled architecture so it can be shared with other 34 keyboard layouts
