@@ -9,12 +9,11 @@ TRI_LAYER_ENABLE = yes
 
 BOOTMAGIC_ENABLE = yes
 TAP_DANCE_ENABLE = yes
-CAPS_WORD_ENABLE = yes
 
 # RGB (underglow) lighting for Liatris
 RGBLIGHT_ENABLE = no
-RGB_MATRIX_ENABLE = yes
-RGB_MATRIX_SLEEP = yes
+RGB_MATRIX_ENABLE = no
+RGB_MATRIX_SLEEP = no
 WS2812_DRIVER = vendor
 
 # Features
