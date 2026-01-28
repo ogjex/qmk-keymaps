@@ -1,8 +1,26 @@
+/*
+ * Copyright (c) 2017 Your Name <you@example.com>
+ * Copyright (c) 2020 Another Author <author@example.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */   
+
 #include "keymap_danish.h"
 #include "keymap.h"
 
-include "tapdance.h"
-include "macros.h"
+#include "tapdance.h"
+#include "macros.h"
 
 // define the various layers
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -41,13 +59,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT(
     // Navigation layer, from base layer 0 ---                                     --------------------------------------------
-    TD(TD_ESC_TM), KC_WH_L, KC_MS_U, KC_WH_R, KC_WH_U, /*split*/                             TD(TD_HOME_P), TD(TD_PREV_T), TD(TD_NEXT_T), TD(TD_END_N), TD(TD_BSPACE),
+    TD(TD_ESC_TM), MS_WHLL, MS_UP, MS_WHLR, MS_WHLU, /*split*/                             TD(TD_HOME_P), TD(TD_PREV_T), TD(TD_NEXT_T), TD(TD_END_N), TD(TD_BSPACE),
     // ----------------------------------------                                     --------------------------------------------
-    TD(TD_APP_TAB), KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D, /*split*/                            TD(TD_LEFT_SKIP), KC_DOWN, KC_UP, TD(TD_RIGHT_SKIP), KC_ENT,
+    TD(TD_APP_TAB), MS_LEFT, MS_DOWN, MS_RGHT, MS_WHLD, /*split*/                            TD(TD_LEFT_SKIP), KC_DOWN, KC_UP, TD(TD_RIGHT_SKIP), KC_ENT,
     // ----------------------------------------                                     --------------------------------------------
-    KC_BTN2, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), TD(TD_DELETE), /*split*/                    KC_ACL0, KC_ACL1, KC_ACL2, KC_PGDN, KC_PGUP,
+    MS_BTN2, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), TD(TD_DELETE), /*split*/                    MS_ACL0, MS_ACL1, MS_ACL2, KC_PGDN, KC_PGUP,
     // ----------------------------------------                                     --------------------------------------------
-                            KC_TRNS, KC_TRNS, /*split*/                                      KC_BTN1, TD(TD_OSM_SCAW)
+                            KC_TRNS, KC_TRNS, /*split*/                                      MS_BTN1, TD(TD_OSM_SCAW)
     ),
 
     [_FKEY] = LAYOUT(

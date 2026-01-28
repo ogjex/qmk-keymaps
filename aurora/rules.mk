@@ -1,5 +1,6 @@
 # Bootloader selection
-SRC += features/tapdance.c
+INTROSPECTION_KEYMAP_C = keymap.c
+SRC += tapdance.c
 
 CONVERT_TO=liatris
 BOOTLOADER = rp2040
