@@ -1,8 +1,8 @@
 # Bootloader selection
-INTROSPECTION_KEYMAP_C = keymap.c
+#INTROSPECTION_KEYMAP_C = keymap.c
 SRC += tapdance.c
 
-CONVERT_TO=liatris
+CONVERT_TO = liatris
 BOOTLOADER = rp2040
 
 # Activate symbol layer + nav layer at once to toggle third layer
