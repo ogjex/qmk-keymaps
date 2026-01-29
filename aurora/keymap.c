@@ -37,7 +37,7 @@ enum {
     TD_OSM_SCAW,
     TD_LEFT_SKIP,
     TD_RIGHT_SKIP,
-    TD_LRST_GUI,
+    TD_LRST_GUI, 
 };
 
 typedef enum {
@@ -77,12 +77,6 @@ void td_left_skip_finished(tap_dance_state_t *state, void *user_data);
 void td_left_skip_reset(tap_dance_state_t *state, void *user_data);
 void td_right_skip_each_tap(tap_dance_state_t *state, void *user_data);
 void td_right_skip_finished(tap_dance_state_t *state, void *user_data);
-void td_right_skip_reset(tap_dance_state_t *state, void *user_data);
-void lrst_gui_finished(tap_dance_state_t *state, void *user_data);
-void lrst_gui_reset(tap_dance_state_t *state, void *user_data);
-void td_close_q(tap_dance_state_t *state, void *user_data);
-void td_close_w(tap_dance_state_t *state, void *user_data);
-void td_rename(tap_dance_state_t *state, void *user_data);
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record);
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record);
 
@@ -91,7 +85,7 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
     // Base key input layer------------------- 			------------------------------------------------
-    KC_Q, KC_W, KC_E, KC_R, KC_T,/*split */ 			KC_Y, KC_U, KC_I, TD(TD_OE_DK), KC_P,
+    TD(TD_ESC_TM), KC_W, KC_E, KC_R, KC_T,/*split */ 			KC_Y, KC_U, KC_I, TD(TD_OE_DK), KC_P,
     //----------------------------------------- 		-----------------------------------------------
     TD(TD_AA_DK), MT(MOD_LSFT,KC_S), MT(MOD_LALT,KC_D), MT(MOD_LCTL,KC_F), MT(MOD_LGUI,KC_G),/*split*/ MT(MOD_RGUI,KC_H),MT(MOD_RCTL,KC_J), MT(MOD_RALT,KC_K), MT(MOD_RSFT,KC_L), TD(TD_AE_ENTER),
     //----------------------------------------- 		-----------------------------------------------
@@ -102,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_SYMB] = LAYOUT(
     // Signs and symbols layer, from layer 0 --                                     ----------------------------------------
-    TD(TD_CQ), TD(TD_CW), LSFT(KC_3), TD(TD_RNM), LSFT(KC_5), /*split*/            LSFT(KC_6), LSFT(KC_7), KC_NO, KC_SLSH, LSFT(KC_SLSH),
+    LSFT(KC_1), LSFT(KC_2), LSFT(KC_3), LSFT(KC_4), LSFT(KC_5), /*split*/            LSFT(KC_6), LSFT(KC_7), KC_NO, KC_SLSH, LSFT(KC_SLSH),
     // ----------------------------------------                                     ----------------------------------------------
     KC_EQL, LSFT(KC_EQL), LSFT(KC_2), KC_NUHS, KC_PAST, /*split*/                   LSFT(KC_1), LSFT(KC_8), LSFT(KC_9), LSFT(KC_MINS), ALGR(KC_EQL),
     // ----------------------------------------                                     ----------------------------------------------
@@ -115,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Numpad layer, from layer 1 ----------                                     ---------------------------------------------
     KC_TRNS, KC_NO, LSFT(KC_0), KC_PPLS, KC_PMNS, /*split*/                                  KC_COMM, KC_7, KC_8, KC_9, TD(TD_BSPACE),
     // ----------------------------------------                                     ---------------------------------------------
-    TD(TD_APP_TAB), KC_NO, KC_NO, KC_PSLS, KC_PAST, /*split*/                                KC_PERC, KC_4, KC_5, KC_6, KC_ENT,
+    TD(TD_APP_TAB),MT(MOD_LSFT,KC_NO), MT(MOD_LALT,KC_NO),MT(MOD_LCTL,KC_PSLS), MT(MOD_LGUI,KC_PAST), /*split*/                                KC_PERC, KC_4, KC_5, KC_6, KC_ENT,
     // ----------------------------------------                                     ---------------------------------------------
     KC_LSFT, KC_LCTL, KC_LGUI, KC_LALT, KC_TRNS, /*split*/                                   KC_0, KC_1, KC_2, KC_3, KC_DOT,
     // ----------------------------------------                                     ---------------------------------------------
@@ -502,10 +496,10 @@ void td_osm_sft_ctl_alt(tap_dance_state_t *state, void *user_data) {
             set_oneshot_mods(MOD_LSFT);
             break;
         case TD_DOUBLE_TAP:
-            set_oneshot_mods(MOD_LCTL);
+            set_oneshot_mods(CW_TOGG);
             break;
         case TD_TRIPLE_TAP:
-            set_oneshot_mods(MOD_LALT);
+            set_oneshot_mods(MOD_LCTL);
             break;
         case TD_SINGLE_HOLD:
             set_oneshot_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
@@ -744,11 +738,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 //Associate our tap dance key with its functionality
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_RESET] = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_DELETE] = ACTION_TAP_DANCE_FN(td_delete),
     [TD_BSPACE] = ACTION_TAP_DANCE_FN(td_bspace),
     [TD_AE_ENTER] = ACTION_TAP_DANCE_FN(td_ae_enter),
-    [TD_TEST_STRING] = ACTION_TAP_DANCE_FN(td_send_success_strings),
     [TD_AA_DK] = ACTION_TAP_DANCE_FN(td_aa),
     [TD_OE_DK] = ACTION_TAP_DANCE_FN(td_oe),
     [TD_APP_TAB] = ACTION_TAP_DANCE_FN(td_apptab_switch),
@@ -762,7 +754,4 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_LEFT_SKIP] = ACTION_TAP_DANCE_FN_ADVANCED(td_left_skip_each_tap, td_left_skip_finished, td_left_skip_reset),
     [TD_RIGHT_SKIP] = ACTION_TAP_DANCE_FN_ADVANCED(td_right_skip_each_tap, td_right_skip_finished, td_right_skip_reset),
     [TD_LRST_GUI] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lrst_gui_finished, lrst_gui_reset),
-    [TD_CQ] = ACTION_TAP_DANCE_FN(td_close_q),
-    [TD_CW] = ACTION_TAP_DANCE_FN(td_close_w),
-    [TD_RNM] = ACTION_TAP_DANCE_FN(td_rename)
 };
