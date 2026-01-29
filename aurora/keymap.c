@@ -36,8 +36,7 @@ enum {
     ALT_OSL1,
     TD_OSM_SCAW,
     TD_LEFT_SKIP,
-    TD_RIGHT_SKIP,
-    TD_LRST_GUI, 
+    TD_RIGHT_SKIP
 };
 
 typedef enum {
@@ -91,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //----------------------------------------- 		-----------------------------------------------
     KC_Z, KC_X , KC_C, KC_V, TD(TD_DELETE),/*split*/ 		KC_B, KC_N, KC_M, KC_COMM, KC_DOT,
     //-----------------------------------------                                     -----------------------------------------------
-                TD(TD_LRST_GUI), MT(MOD_LSFT, KC_SPC), /*split*/                             OSL(_SYMB), TD(TD_OSM_SCAW)
+                TO(_QWERTY), MT(MOD_LSFT, KC_SPC), /*split*/                             OSL(_SYMB), TD(TD_OSM_SCAW)
     ),
 
     [_SYMB] = LAYOUT(
@@ -496,10 +495,11 @@ void td_osm_sft_ctl_alt(tap_dance_state_t *state, void *user_data) {
             set_oneshot_mods(MOD_LSFT);
             break;
         case TD_DOUBLE_TAP:
-            set_oneshot_mods(CW_TOGG);
+	    //this should ideally be caps word toggle but is currently difficult to implement
+            set_oneshot_mods(MOD_LCTL);
             break;
         case TD_TRIPLE_TAP:
-            set_oneshot_mods(MOD_LCTL);
+            set_oneshot_mods(MOD_LALT);
             break;
         case TD_SINGLE_HOLD:
             set_oneshot_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
@@ -576,7 +576,6 @@ void td_right_skip_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-
 void td_right_skip_reset(tap_dance_state_t *state, void *user_data) {
     tap_state.state = cur_dance(state);
     switch (tap_state.state) {
@@ -588,138 +587,6 @@ void td_right_skip_reset(tap_dance_state_t *state, void *user_data) {
     tap_state.state = TD_NONE;
     unregister_code(KC_LCTL);
     unregister_code(KC_RIGHT);
-}
-
-/*
-
-typedef struct {
-  bool is_press_action;
-  int state;
-} tap;
-
-// define alttap state for oneshot functions
-static tap alttap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-
-// Defining oneshot layer functions
-void alt_finished (tap_dance_state_t *state, void *user_data) {
-  alttap_state.state = cur_dance(state);
-  switch (alttap_state.state) {
-    case TD_SINGLE_TAP: set_oneshot_layer(0, ONESHOT_START); clear_oneshot_layer_state(ONESHOT_PRESSED); break;
-    case TD_SINGLE_HOLD: register_code(KC_LALT); break;
-    case TD_DOUBLE_TAP: set_oneshot_layer(0, ONESHOT_START); set_oneshot_layer(0, ONESHOT_PRESSED); break;
-    case TD_DOUBLE_HOLD: register_code(KC_LALT); layer_on(0); break;
-    //Last case is for fast typing. Assuming your key is `f`:
-    //For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-    //In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-  }
-}
-
-void alt_reset (tap_dance_state_t *state, void *user_data) {
-  switch (alttap_state.state) {
-    case TD_SINGLE_TAP: break;
-    case TD_SINGLE_HOLD: unregister_code(KC_LALT); break;
-    case TD_DOUBLE_TAP: break;
-    case TD_DOUBLE_HOLD: layer_off(0); unregister_code(KC_LALT); break;
-  }
-  alttap_state.state = 0;
-
-}
-*/
-
-// Create an instance of 'td_tap_t' for the 'layer reset and hold gui' tap dance.
-static td_tap_t guitap_state = {
-    .is_press_action = true,
-    .state = TD_NONE
-};
-
-// for Layer reset and GUI hold tapdance; handle the possible states for each tapdance keycode you define
-
-void lrst_gui_finished (tap_dance_state_t *state, void *user_data) {
-    guitap_state.state = cur_dance(state);
-    switch (guitap_state.state) {
-        case TD_SINGLE_TAP:
-            layer_move(_QWERTY);
-            break;
-        case TD_SINGLE_HOLD:
-            register_mods(MOD_BIT(KC_LGUI)); // for a layer-tap key, use `layer_on(_MY_LAYER)` here
-            break;
-        default:
-            break;
-  }
-}
-
-void lrst_gui_reset (tap_dance_state_t *state, void *user_data) {
-    switch (guitap_state.state) {
-        case TD_SINGLE_HOLD:
-            unregister_mods(MOD_BIT(KC_LGUI)); // for a layer-tap key, use `layer_off(_MY_LAYER)` here
-            break;
-        default:
-
-            break;
-  }
-   guitap_state.state = TD_NONE;
-}
-
-// close window when holding w
-void w_close(tap_dance_state_t *state, void *user_data) {
-    tap_state.state = cur_dance(state);
-    switch (tap_state.state) {
-        case TD_SINGLE_TAP:
-            tap_code(KC_W);
-            break;
-        case TD_DOUBLE_HOLD:
-            SEND_STRING(SS_DOWN(X_LCTL) "W" SS_UP(X_LCTL));
-            break;
-        default:
-            break;
-    }
-}
-// close application when holding q
-void td_close_q(tap_dance_state_t *state, void *user_data) {
-    tap_state.state = cur_dance(state);
-    switch (tap_state.state) {
-        case TD_SINGLE_TAP:
-            tap_code(KC_Q);
-            break;
-        case TD_SINGLE_HOLD:
-            SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_F4) SS_UP(X_LALT));
-            break;
-        default:
-            break;
-    }
-}
-
-// close window when holding w
-void td_close_w(tap_dance_state_t *state, void *user_data) {
-    tap_state.state = cur_dance(state);
-    switch (tap_state.state) {
-        case TD_SINGLE_TAP:
-            SEND_STRING(SS_DOWN(X_RALT) "2" SS_UP(X_RALT));
-            break;
-        case TD_SINGLE_HOLD:
-            SEND_STRING(SS_DOWN(X_LCTL) "w" SS_UP(X_LCTL));
-            break;
-        default:
-            break;
-    }
-}
-
-void td_rename(tap_dance_state_t *state, void *user_data) {
-// rename when holding r
-    tap_state.state = cur_dance(state);
-    switch (tap_state.state) {
-        case TD_SINGLE_TAP:
-            SEND_STRING(SS_DOWN(X_RALT) "4" SS_UP(X_RALT));
-            break;
-        case TD_SINGLE_HOLD:
-            SEND_STRING(SS_TAP(X_F2));
-            break;
-        default:
-            break;
-    }
 }
 
 // define per key tapping term
@@ -753,5 +620,4 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_OSM_SCAW] = ACTION_TAP_DANCE_FN(td_osm_sft_ctl_alt),
     [TD_LEFT_SKIP] = ACTION_TAP_DANCE_FN_ADVANCED(td_left_skip_each_tap, td_left_skip_finished, td_left_skip_reset),
     [TD_RIGHT_SKIP] = ACTION_TAP_DANCE_FN_ADVANCED(td_right_skip_each_tap, td_right_skip_finished, td_right_skip_reset),
-    [TD_LRST_GUI] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lrst_gui_finished, lrst_gui_reset),
 };
