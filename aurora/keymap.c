@@ -84,7 +84,7 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
     // Base key input layer------------------- 			------------------------------------------------
-    TD(TD_ESC_TM), KC_W, KC_E, KC_R, KC_T,/*split */ 			KC_Y, KC_U, KC_I, TD(TD_OE_DK), KC_P,
+    KC_Q, KC_W, KC_E, KC_R, KC_T,/*split */ 			KC_Y, KC_U, KC_I, TD(TD_OE_DK), KC_P,
     //----------------------------------------- 		-----------------------------------------------
     TD(TD_AA_DK), MT(MOD_LSFT,KC_S), MT(MOD_LALT,KC_D), MT(MOD_LCTL,KC_F), MT(MOD_LGUI,KC_G),/*split*/ MT(MOD_RGUI,KC_H),MT(MOD_RCTL,KC_J), MT(MOD_RALT,KC_K), MT(MOD_RSFT,KC_L), TD(TD_AE_ENTER),
     //----------------------------------------- 		-----------------------------------------------
@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_SYMB] = LAYOUT(
     // Signs and symbols layer, from layer 0 --                                     ----------------------------------------
-    LSFT(KC_1), LSFT(KC_2), LSFT(KC_3), LSFT(KC_4), LSFT(KC_5), /*split*/            LSFT(KC_6), LSFT(KC_7), KC_NO, KC_SLSH, LSFT(KC_SLSH),
+    LSFT(KC_1), ALGR(KC_2), LSFT(KC_3), ALGR(KC_4), LSFT(KC_5), /*split*/            LSFT(KC_6), LSFT(KC_7), KC_NO, KC_SLSH, LSFT(KC_SLSH),
     // ----------------------------------------                                     ----------------------------------------------
     KC_EQL, LSFT(KC_EQL), LSFT(KC_2), KC_NUHS, KC_PAST, /*split*/                   LSFT(KC_1), LSFT(KC_8), LSFT(KC_9), LSFT(KC_MINS), ALGR(KC_EQL),
     // ----------------------------------------                                     ----------------------------------------------
